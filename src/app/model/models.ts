@@ -10,8 +10,9 @@ export interface Product {
   name: string;
   price: number;
   description: string;
-  image: string;
+  imgUrl: string;
   category: string;
+  brand: string;
 }
 
 export interface Order {

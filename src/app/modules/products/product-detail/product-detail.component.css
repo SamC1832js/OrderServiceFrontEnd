@@ -1,0 +1,19 @@
+.product-detail {
+}
+
+.product-detail p {
+  max-width: 15rem;
+}
+
+.product-detail .product-name {
+  font-size: 0.85rem;
+}
+
+.product-detail .product-price {
+  font-size: 1.1rem;
+}
+
+.product-detail img {
+  width: 7rem;
+  height: auto;
+}
