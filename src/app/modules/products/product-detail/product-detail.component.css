@@ -1,4 +1,8 @@
 .product-detail {
+  margin-bottom: 5rem;
+  border-style: solid;
+  border-color: beige
+  ;
 }
 
 .product-detail p {
@@ -6,11 +10,13 @@
 }
 
 .product-detail .product-name {
+  margin-top: 1.5rem;
   font-size: 0.85rem;
 }
 
 .product-detail .product-price {
-  font-size: 1.1rem;
+  margin-top: 1rem;
+  font-size: 1.5rem;
 }
 
 .product-detail img {
