@@ -12,24 +12,32 @@
           [src]="item.product.imgUrl"
           alt="{{ item.product.name }}"
         />
-        <p class="item-price">${{ item.product.price?.toFixed(2) }}</p>
+        <p class="item-price">${{ item.product.price * item.quantity }}</p>
       </div>
       <div class="item-quantity">
-        <input
-          type="number"
-          [ngModel]="item.quantity"
-          (ngModelChange)="updateQuantity(item.product.name, $event)"
-          min="1"
-        />
+        <div>
+          <button (click)="decrement(item)">-</button>
+          <input
+            type="number"
+            [ngModel]="item.quantity"
+            (ngModelChange)="updateQuantity(item.product.name, $event)"
+            min="1"
+          />
+          <button (click)="increment(item)">+</button>
+        </div>
+        <div>
+          <button class="remove-btn" (click)="removeProduct(item.product.name)">
+            <img src="assets/delete-bin-line.svg" alt="Remove" />
+          </button>
+        </div>
       </div>
-      <button class="remove-btn" (click)="removeProduct(item.product.name)">
-        Remove
-      </button>
     </div>
     <div class="cart-total">
       <p>Total: ${{ cart.totalPrice.toFixed(2) }}</p>
     </div>
-    <button class="clear-btn" (click)="clearCart()">Clear Cart</button>
-    <button class="checkout-btn" (click)="checkoutCart()">CheckOut</button>
+    <div class="cart-buttons">
+      <button class="clear-btn" (click)="clearCart()">Clear Cart</button>
+      <button class="checkout-btn" (click)="checkoutCart()">CheckOut</button>
+    </div>
   </div>
 </div>

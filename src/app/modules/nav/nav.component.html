@@ -1,8 +1,11 @@
 <div class="navbar">
-  <label class="navbar-brand">Computer Parts Shop</label>
+  <a routerLink="/products"><img class="logo" src="assets/Pcpro.png" /></a>
+
   <a routerLink="/products" class="nav-button">Products</a>
   <div class="dropdown" *ngIf="isAuthenticated$ | async; else guestDropdown">
-    <button class="dropdown-button">Account</button>
+    <button class="dropdown-button">
+      <img src="assets/account-circle-line.svg" alt="Account" />
+    </button>
     <div class="dropdown-content">
       <a routerLink="/account/profile">Profile</a>
       <a routerLink="/account/orders">Orders</a>
@@ -18,5 +21,8 @@
       </div>
     </div>
   </ng-template>
-  <a routerLink="/cart" class="nav-button">Cart ({{ itemCount$ | async }})</a>
+  <a routerLink="/cart" class="nav-button"
+    ><p class="cart-count">({{ itemCount$ | async }})</p>
+    <img src="assets/shopping-cart-line.svg" alt="Cart" />
+  </a>
 </div>

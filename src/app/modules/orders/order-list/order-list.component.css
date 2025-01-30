@@ -1,6 +1,8 @@
 /* Order List */
 .order-list {
   padding: 2rem;
+  margin-left: 25vw;
+  margin-right: 25vw;
 }
 
 .order-card {

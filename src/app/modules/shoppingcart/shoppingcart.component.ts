@@ -94,4 +94,16 @@ export class ShoppingCartComponent implements OnInit, AfterViewInit {
       },
     });
   }
+
+  increment(item: any): void {
+    item.quantity++;
+    this.updateQuantity(item.product.name, item.quantity);
+  }
+
+  decrement(item: any): void {
+    if (item.quantity > 1) {
+      item.quantity--;
+      this.updateQuantity(item.product.name, item.quantity);
+    }
+  }
 }

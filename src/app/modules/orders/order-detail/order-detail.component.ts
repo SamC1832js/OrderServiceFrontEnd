@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Order } from 'src/app/model/models';
 import { OrderService } from 'src/app/service/order.service';
-import { DatePipe } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
 
 @Component({
   selector: 'app-order-detail',
@@ -15,7 +13,8 @@ export class OrderDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -26,5 +25,8 @@ export class OrderDetailComponent implements OnInit {
         error: (error) => console.error('Failed to load order:', error),
       });
     }
+  }
+  goBack(): void {
+    this.router.navigate(['/account/orders']);
   }
 }

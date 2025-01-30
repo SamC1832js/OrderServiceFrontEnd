@@ -25,38 +25,116 @@ h2 {
   flex: 1;
 }
 
+.item-image {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: 8rem;
+  height: auto;
+}
+
 .item-name {
-  font-size: 18px;
+  font-size: 0.95rem;
   color: #fff;
+  max-width: 25rem;
 }
 
 .item-price {
+  font-size: 1.1rem;
   color: #bbb;
+  font-weight: bold;
 }
 
 .item-quantity input {
-  width: 50px;
-  padding: 5px;
+  width: 60px; /* Slightly wider for better readability */
+  padding: 8px; /* More padding for a comfortable feel */
   text-align: center;
-  background-color: #333;
-  color: #fff;
-  border: 1px solid #555;
-  border-radius: 4px;
+  background-color: #1e1e1e; /* Dark background */
+  color: #e0e0e0; /* Light text color */
+  border: 1px solid #444; /* Subtle border */
+  border-radius: 6px; /* Slightly rounded corners */
+  font-size: 14px; /* Appropriate font size */
+  outline: none; /* Remove default focus outline */
+  transition: all 0.2s ease; /* Smooth transitions */
+  margin-left: 0.3rem;
+  margin-right: 0.3rem;
 }
 
-.remove-btn {
-  background-color: #ff4d4d;
-  color: white;
+/* Hover state */
+.item-quantity input:hover {
+  border-color: #666; /* Lighten border on hover */
+}
+
+/* Focus state */
+.item-quantity input:focus {
+  border-color: #007bff; /* Highlight border on focus */
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25); /* Subtle glow effect */
+}
+
+/* Disable number input arrows */
+.item-quantity input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+.item-quantity input[type="number"]::-webkit-outer-spin-button,
+.item-quantity input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none; /* Chrome, Safari */
+  margin: 0; /* Remove default margin */
+}
+
+.item-quantity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.item-quantity button {
+  width: 30px;
+  height: 30px;
+  background-color: #444;
+  color: #fff;
   border: none;
-  padding: 5px 10px;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-.remove-btn:hover {
-  background-color: #ff1a1a;
+.item-quantity button:hover {
+  background-color: #666;
 }
 
+.item-quantity button:active {
+  background-color: #333;
+}
+
+.item-quantity .remove-btn {
+  opacity: 0.8;
+  width: 1.5rem;
+  margin-top: 2rem;
+  transition: all 0.3 ease-in-out;
+  background: none;
+  -webkit-transition: all 0.3 ease-in-out;
+  -moz-transition: all 0.3 ease-in-out;
+  -ms-transition: all 0.3 ease-in-out;
+  -o-transition: all 0.3 ease-in-out;
+}
+.item-quantity .remove-btn img {
+  filter: invert();
+  -webkit-filter: invert();
+}
+
+.item-quantity .remove-btn:hover {
+  transform: scale(1.06);
+  -webkit-transform: scale(1.06);
+  -moz-transform: scale(1.06);
+  -ms-transform: scale(1.06);
+  -o-transform: scale(1.06);
+  background: none;
+}
+.cart-buttons {
+  display: flex;
+  justify-content: space-between;
+}
 .cart-total {
   text-align: right;
   margin-top: 20px;
@@ -65,29 +143,40 @@ h2 {
 }
 
 .clear-btn {
-  background-color: #ff4d4d;
+  background-color: #ff4d4da8;
   color: white;
   border: none;
   padding: 10px 20px;
   border-radius: 4px;
   cursor: pointer;
   margin-top: 20px;
+  transition: all 0.3s ease-in-out;
 }
 
 .clear-btn:hover {
-  background-color: #ff1a1a;
+  background-color: #e43e3ed0;
 }
 
 .checkout-btn {
-  background-color: #008c8c;
+  background-color: #861cc4dd;
   color: white;
   border: none;
   padding: 10px 20px;
   border-radius: 4px;
   cursor: pointer;
   margin-top: 20px;
+  transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
 }
 
 .checkout-btn:hover {
-  background-color: #007272;
+  transform: translateY(-1px);
+  -webkit-transform: translateY(-1px);
+  -moz-transform: translateY(-1px);
+  -ms-transform: translateY(-1px);
+  -o-transform: translateY(-1px);
+  background-color: #861cc4fc;
 }

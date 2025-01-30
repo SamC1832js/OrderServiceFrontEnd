@@ -1,7 +1,8 @@
 /* Navbar */
 .navbar {
   background-color: var(--secondary-bg);
-  padding: 1rem;
+  padding-left: 7vw;
+  padding-right: 7vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -9,10 +10,11 @@
   margin-bottom: 5vh;
 }
 
-.navbar-brand {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--accent-color);
+.navbar .logo {
+  width: 11rem;
+  height: auto;
+  filter: invert();
+  -webkit-filter: invert();
 }
 
 .nav-button {
@@ -21,6 +23,13 @@
   padding: 0.5rem 1rem;
   border-radius: 5px;
   transition: background 0.3s ease;
+}
+
+.nav-button p {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 0.75rem;
 }
 
 .nav-button:hover {
@@ -41,13 +50,22 @@
   cursor: pointer;
 }
 
+.dropdown-button img,
+.nav-button img,
+.dropdown-content img {
+  width: 1.7rem;
+  height: auto;
+  filter: invert();
+  -webkit-filter: invert();
+}
+
 .dropdown-content {
   display: none;
   position: absolute;
   background-color: var(--secondary-bg);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
-  min-width: 120px;
+  max-width: 8rem;
   padding: 0.5rem;
 }
 
@@ -61,10 +79,10 @@
   color: var(--text-color);
   text-decoration: none;
   padding: 0.5rem;
-  text-align: left;
   background: none;
   border: none;
   cursor: pointer;
+  justify-items: center;
 }
 
 .dropdown-content a:hover,
