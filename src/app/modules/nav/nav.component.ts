@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { ShoppingCart } from 'src/app/model/models';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
+import { ShoppingCart, User } from 'src/app/model/models';
 import { AccountService } from 'src/app/service/account.service';
 import { ShoppingCartService } from 'src/app/service/shoppingCart.service';
 
@@ -12,39 +13,35 @@ import { ShoppingCartService } from 'src/app/service/shoppingCart.service';
 export class NavComponent implements OnInit, OnDestroy {
   showDropdown = false;
   cartItemCount = 0;
-  private cartSubscription?: Subscription;
-
+  isAuthenticated$: Observable<boolean>;
+  private destroy$ = new Subject<void>();
   constructor(
     private shoppingCartService: ShoppingCartService,
     private accountService: AccountService
   ) {
-    this.shoppingCartService.cart$.subscribe((cart) => {
-      this.cartItemCount = cart?.products?.length || 0;
-    });
+    this.isAuthenticated$ = this.accountService.isAuthenticated$;
   }
-
   ngOnInit() {
-    this.cartSubscription = this.shoppingCartService.cart$.subscribe(
-      (cart: ShoppingCart | null) => {
+    this.shoppingCartService.cart$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((cart) => {
         this.cartItemCount = cart?.products?.length || 0;
-      }
-    );
-    //Initial fetch
-    this.shoppingCartService.getShoppingCart().subscribe();
+      });
+    // Load initial cart state only if not already loaded
+    // if (!this.shoppingCartService.currentCart$) {
+    //   this.shoppingCartService.getShoppingCart().pipe(take(1)).subscribe();
+    // }
   }
-
   ngOnDestroy() {
-    this.cartSubscription?.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
-
   get isAuthenticated(): Promise<boolean> {
     return this.accountService.isAuthenticated();
   }
-
-  get user(): any {
-    return this.accountService.getProfile();
+  get user(): Observable<User> {
+    return this.accountService.getProfile() as Observable<User>;
   }
-
   logOut() {
     this.accountService.logout();
   }

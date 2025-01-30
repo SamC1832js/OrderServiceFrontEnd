@@ -3,12 +3,16 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AuthTokenService } from './authToken.service';
 import { tap } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
   apiHeader: string = 'users';
+  private authStatus = new BehaviorSubject<boolean>(false);
+  isAuthenticated$ = this.authStatus.asObservable();
+
   constructor(
     private http: HttpClient,
     private authTokenService: AuthTokenService
@@ -29,6 +33,7 @@ export class AccountService {
         tap((response: { Authorization: string; message: string }) => {
           // Store the token using AuthTokenService
           this.authTokenService.setToken(response.Authorization);
+          this.authStatus.next(true);
         })
       );
   }
@@ -49,6 +54,7 @@ export class AccountService {
 
   logout() {
     this.authTokenService.clearToken();
+    this.authStatus.next(false);
   }
 
   getProfile() {
@@ -57,7 +63,7 @@ export class AccountService {
       'Content-Type': 'application/json',
       Authorization: `${token}`,
     });
-    return this.http.post(`${environment.apiBaseUrl + this.apiHeader}`, {
+    return this.http.get(`${environment.apiBaseUrl + this.apiHeader}/profile`, {
       headers,
     });
   }

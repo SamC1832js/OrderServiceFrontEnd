@@ -1,41 +1,41 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { ShoppingCart, CartItem, Product, OrderItem } from '../model/models';
 import { environment } from 'src/environments/environment';
 import { AuthTokenService } from './authToken.service';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, map, tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
 export class ShoppingCartService {
   apiHeader: string = 'shoppingcart';
   private cartSubject = new BehaviorSubject<ShoppingCart | null>(null);
-  public cart$ = this.cartSubject.asObservable();
+  private currentCart: ShoppingCart | null = null;
+
+  cart$: Observable<ShoppingCart | null> = this.cartSubject.asObservable();
 
   constructor(
     private http: HttpClient,
     private authTokenService: AuthTokenService
   ) {}
 
-  private updateCartState(cart: ShoppingCart | null) {
-    this.cartSubject.next(cart);
-  }
-
   // Get the current user's shopping cart
   getShoppingCart(): Observable<ShoppingCart> {
+    if (this.currentCart) return of(this.currentCart);
+
     const headers = this.authTokenService.getAuthHeaders();
     return this.http
       .get<any>(`${environment.apiBaseUrl}${this.apiHeader}`, { headers })
       .pipe(
         map((raw) => {
           const transformed = this.transformProductData(raw);
-          this.updateCartState(transformed);
+          this.cartSubject.next(transformed);
           return transformed;
         }),
         catchError((error) => {
-          console.error('Error fetching shopping cart:', error);
-          return throwError(() => new Error('Failed to fetch shopping cart'));
+          this.cartSubject.next(null);
+          return throwError(() => error);
         })
       );
   }
@@ -47,11 +47,13 @@ export class ShoppingCartService {
     const headers = this.authTokenService.getAuthHeaders();
     const body: CartItem = { productName, quantity };
 
-    return this.http
-      .post<ShoppingCart>(`${environment.apiBaseUrl}${this.apiHeader}`, body, {
+    return this.http.post<ShoppingCart>(
+      `${environment.apiBaseUrl}${this.apiHeader}`,
+      body,
+      {
         headers,
-      })
-      .pipe(tap((cart) => this.updateCartState(cart)));
+      }
+    );
   }
 
   // Update the quantity of a product in the shopping cart
