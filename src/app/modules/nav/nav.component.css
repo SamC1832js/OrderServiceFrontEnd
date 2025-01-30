@@ -1,0 +1,89 @@
+/* navbar.component.scss */
+.navbar {
+  background: #2c3e50;
+  color: white;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  .nav-items {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .nav-item {
+    position: relative;
+
+    button {
+      background: none;
+      border: none;
+      color: white;
+      padding: 0.8rem 1.2rem;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: #34495e;
+      }
+
+      .badge {
+        background: #e74c3c;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  .dropdown {
+    &-content {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      min-width: 200px;
+      z-index: 1000;
+      margin-top: 0.5rem;
+    }
+
+    &-item {
+      color: #2c3e50;
+      padding: 0.8rem 1rem;
+      text-decoration: none;
+      display: block;
+      transition: background 0.3s ease;
+
+      &:hover {
+        background: #f8f9fa;
+      }
+    }
+  }
+
+  .welcome-message {
+    padding: 1rem;
+    font-weight: 500;
+    border-bottom: 1px solid #eee;
+    color: #2c3e50;
+  }
+}

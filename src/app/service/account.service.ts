@@ -51,6 +51,17 @@ export class AccountService {
     this.authTokenService.clearToken();
   }
 
+  getProfile() {
+    const token = this.authTokenService.getToken();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `${token}`,
+    });
+    return this.http.post(`${environment.apiBaseUrl + this.apiHeader}`, {
+      headers,
+    });
+  }
+
   async isAuthenticated(): Promise<boolean> {
     const token = this.authTokenService.getToken();
     console.log('Token:', token);

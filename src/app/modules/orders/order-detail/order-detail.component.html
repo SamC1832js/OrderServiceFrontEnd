@@ -1,15 +1,24 @@
+<!-- order-detail.component.html -->
 <div *ngIf="order" class="order-detail">
   <h2>Order #{{ order.id }}</h2>
   <p>Date: {{ order.date | date }}</p>
-  <p>Total: ${{ order.total }}</p>
+  <p>Total Paid: ${{ order.totalPrice | number : "1.2-2" }}</p>
 
   <h3>Products:</h3>
-  <div *ngFor="let item of order.products" class="order-item">
-    <img [src]="item.product.imgUrl" alt="{{ item.product.name }}" />
-    <div>
-      <h4>{{ item.product.name }}</h4>
-      <p>Quantity: {{ item.quantity }}</p>
-      <p>Price: ${{ item.product.price }}</p>
+  <div *ngIf="order.products?.length; else noProducts">
+    <div *ngFor="let item of order.products" class="order-item">
+      <img [src]="item.product?.imgUrl" alt="{{ item.product?.name }}" />
+      <div>
+        <h4>{{ item.product?.name || "Unknown Product" }}</h4>
+        <p>Quantity: {{ item.quantity }}</p>
+        <p>
+          Price: ${{ item.product.price * item.quantity | number : "1.2-2" }}
+        </p>
+      </div>
     </div>
   </div>
+
+  <ng-template #noProducts>
+    <p>No products in this order</p>
+  </ng-template>
 </div>

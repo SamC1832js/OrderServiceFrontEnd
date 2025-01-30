@@ -1,20 +1,26 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { ShoppingCart, CartItem, Product, OrderItem } from '../model/models';
 import { environment } from 'src/environments/environment';
 import { AuthTokenService } from './authToken.service';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
 export class ShoppingCartService {
   apiHeader: string = 'shoppingcart';
+  private cartSubject = new BehaviorSubject<ShoppingCart | null>(null);
+  public cart$ = this.cartSubject.asObservable();
 
   constructor(
     private http: HttpClient,
     private authTokenService: AuthTokenService
   ) {}
+
+  private updateCartState(cart: ShoppingCart | null) {
+    this.cartSubject.next(cart);
+  }
 
   // Get the current user's shopping cart
   getShoppingCart(): Observable<ShoppingCart> {
@@ -22,7 +28,11 @@ export class ShoppingCartService {
     return this.http
       .get<any>(`${environment.apiBaseUrl}${this.apiHeader}`, { headers })
       .pipe(
-        map((rawCart) => this.transformCartData(rawCart)), // Transform raw cart data
+        map((raw) => {
+          const transformed = this.transformProductData(raw);
+          this.updateCartState(transformed);
+          return transformed;
+        }),
         catchError((error) => {
           console.error('Error fetching shopping cart:', error);
           return throwError(() => new Error('Failed to fetch shopping cart'));
@@ -35,17 +45,13 @@ export class ShoppingCartService {
     quantity: number = 1
   ): Observable<ShoppingCart> {
     const headers = this.authTokenService.getAuthHeaders();
-    const body: CartItem = {
-      productName,
-      quantity,
-    };
-    return this.http.post<ShoppingCart>(
-      `${environment.apiBaseUrl}${this.apiHeader}`,
-      body,
-      {
+    const body: CartItem = { productName, quantity };
+
+    return this.http
+      .post<ShoppingCart>(`${environment.apiBaseUrl}${this.apiHeader}`, body, {
         headers,
-      }
-    );
+      })
+      .pipe(tap((cart) => this.updateCartState(cart)));
   }
 
   // Update the quantity of a product in the shopping cart
@@ -107,18 +113,18 @@ export class ShoppingCartService {
     };
   }
 
-  private transformCartData(rawCart: any): ShoppingCart {
-    const transformedProducts: OrderItem[] = Object.entries(
-      rawCart.products
-    ).map(([productStr, quantity]) => ({
-      product: this.parseProductString(productStr),
-      quantity: quantity as number,
-    }));
+  private transformProductData(raw: any): ShoppingCart {
+    const transformedProducts: OrderItem[] = Object.entries(raw.products).map(
+      ([productStr, quantity]) => ({
+        product: this.parseProductString(productStr),
+        quantity: quantity as number,
+      })
+    );
 
     return {
-      id: rawCart.id,
+      id: raw.id,
       products: transformedProducts,
-      totalPrice: rawCart.totalPrice,
+      totalPrice: raw.totalPrice,
     };
   }
 }
