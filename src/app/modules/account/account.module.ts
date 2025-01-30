@@ -4,17 +4,25 @@ import { AccountComponent } from './account.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+import { OrdersComponent } from './orders/orders.component';
+import { ProfileComponent } from './profile/profile.component';
 
-@NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    RouterModule.forChild([
-      { path: 'register', component: RegisterComponent },
+const routes: Routes = [
+  {
+    path: 'account',
+    component: AccountComponent,
+    children: [
       { path: 'login', component: LoginComponent },
-    ]),
-  ],
+      { path: 'register', component: RegisterComponent },
+      { path: 'orders', component: OrdersComponent },
+      { path: 'profile', component: ProfileComponent },
+      { path: '', redirectTo: 'login', pathMatch: 'full' }, // Default route
+    ],
+  },
+];
+@NgModule({
+  imports: [CommonModule, FormsModule, RouterModule.forChild(routes)],
   declarations: [AccountComponent, LoginComponent, RegisterComponent],
   exports: [AccountComponent, LoginComponent, RegisterComponent],
   providers: [],

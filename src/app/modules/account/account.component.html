@@ -1,1 +1,34 @@
-<form></form>
+<div class="account-container">
+  <h2>Account</h2>
+  <div class="button-group">
+    <button
+      *ngIf="!isAuthenticated"
+      routerLink="/account/login"
+      class="btn btn-primary"
+    >
+      Login
+    </button>
+    <button
+      *ngIf="!isAuthenticated"
+      routerLink="/account/register"
+      class="btn btn-secondary"
+    >
+      Register
+    </button>
+    <button
+      *ngIf="isAuthenticated"
+      routerLink="/account/orders"
+      class="btn btn-info"
+    >
+      Orders
+    </button>
+    <button
+      *ngIf="isAuthenticated"
+      routerLink="/account/profile"
+      class="btn btn-success"
+    >
+      Account
+    </button>
+  </div>
+  <router-outlet></router-outlet>
+</div>

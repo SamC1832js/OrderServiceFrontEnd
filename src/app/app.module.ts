@@ -21,6 +21,7 @@ import { AccountModule } from './modules/account/account.module';
     AppRoutingModule,
     AccountModule,
     ProductsModule,
+    AccountModule,
   ],
   providers: [ProductService],
   bootstrap: [AppComponent],
