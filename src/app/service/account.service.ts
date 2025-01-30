@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AuthTokenService } from './authToken.service';
 import { catchError, tap } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../model/models';
 
 @Injectable({
@@ -55,17 +55,23 @@ export class AccountService {
     lastName: string,
     email: string,
     password: string
-  ) {
+  ): Observable<any> {
     const body = { firstName, lastName, email, password };
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    this.http.post(
-      `${environment.apiBaseUrl + this.apiHeader}/register`,
-      body,
-      { headers }
-    );
-    return this.login(email, password);
+
+    return this.http
+      .post(`${environment.apiBaseUrl + this.apiHeader}/register`, body, {
+        headers,
+        responseType: 'text',
+      })
+      .pipe(
+        catchError((error) => {
+          console.error('Registration failed:', error);
+          throw error; // Re-throw the error to handle it in the component
+        })
+      );
   }
 
   logout(): void {
