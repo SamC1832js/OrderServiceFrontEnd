@@ -12,6 +12,10 @@ import { RouterModule } from '@angular/router';
 import { AccountModule } from './modules/account/account.module';
 import { ShoppingCartService } from './service/shoppingCart.service';
 import { ShoppingCartComponent } from './modules/shoppingcart/shoppingcart.component';
+import { OrdersModule } from './modules/orders/orders.module';
+import { AuthTokenService } from './service/authToken.service';
+import { OrderService } from './service/order.service';
+import { AccountService } from './service/account.service';
 
 @NgModule({
   declarations: [AppComponent, NavComponent, ShoppingCartComponent],
@@ -19,13 +23,20 @@ import { ShoppingCartComponent } from './modules/shoppingcart/shoppingcart.compo
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot([]),
+    RouterModule,
     AppRoutingModule,
     AccountModule,
     ProductsModule,
     AccountModule,
+    OrdersModule,
   ],
-  providers: [ProductService, ShoppingCartService],
+  providers: [
+    ProductService,
+    ShoppingCartService,
+    AuthTokenService,
+    OrderService,
+    AccountService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

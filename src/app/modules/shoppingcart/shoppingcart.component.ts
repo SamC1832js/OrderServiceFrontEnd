@@ -1,5 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ShoppingCart } from 'src/app/model/models';
+import { OrderService } from 'src/app/service/order.service';
 import { ShoppingCartService } from 'src/app/service/shoppingCart.service';
 
 @Component({
@@ -10,7 +12,11 @@ import { ShoppingCartService } from 'src/app/service/shoppingCart.service';
 export class ShoppingCartComponent implements OnInit, AfterViewInit {
   cart!: ShoppingCart;
 
-  constructor(private shoppingCartService: ShoppingCartService) {}
+  constructor(
+    private shoppingCartService: ShoppingCartService,
+    private orderService: OrderService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.fetchShoppingCart();
@@ -67,5 +73,17 @@ export class ShoppingCartComponent implements OnInit, AfterViewInit {
     });
   }
 
-  checkoutCart() {}
+  checkoutCart() {
+    this.orderService.createOrder().subscribe({
+      next: (order) => {
+        console.log('Order created:', order);
+        this.clearCart(); // Clear cart after successful order creation
+        this.router.navigate(['/orders', order.id]); // Navigate to order detail
+      },
+      error: (error) => {
+        console.error('Checkout failed:', error);
+        // Handle error (show message to user)
+      },
+    });
+  }
 }
