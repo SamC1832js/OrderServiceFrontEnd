@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AccountService } from './account.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -23,5 +22,12 @@ export class AuthTokenService {
   // Clear the token (e.g., on logout)
   clearToken(): void {
     localStorage.removeItem(this.tokenKey);
+  }
+
+  getAuthHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: this.getToken() || '',
+    });
   }
 }

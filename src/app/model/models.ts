@@ -17,13 +17,22 @@ export interface Product {
 
 export interface Order {
   id: number;
-  products: Product[];
+  products: OrderItem[];
   total: number;
   date: Date;
 }
 
 export interface ShoppingCart {
   id: number;
-  products: Product[];
-  total: number;
+  products: OrderItem[];
+  totalPrice: number;
+}
+
+export interface OrderItem {
+  product: Product;
+  quantity: number;
+}
+export interface CartItem {
+  productName: string;
+  quantity?: number;
 }

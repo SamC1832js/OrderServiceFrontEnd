@@ -10,9 +10,11 @@ import { NavComponent } from './modules/nav/nav.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AccountModule } from './modules/account/account.module';
+import { ShoppingCartService } from './service/shoppingCart.service';
+import { ShoppingCartComponent } from './modules/shoppingcart/shoppingcart.component';
 
 @NgModule({
-  declarations: [AppComponent, NavComponent],
+  declarations: [AppComponent, NavComponent, ShoppingCartComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -23,7 +25,7 @@ import { AccountModule } from './modules/account/account.module';
     ProductsModule,
     AccountModule,
   ],
-  providers: [ProductService],
+  providers: [ProductService, ShoppingCartService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

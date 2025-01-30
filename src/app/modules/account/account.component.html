@@ -29,6 +29,9 @@
     >
       Account
     </button>
+    <button *ngIf="isAuthenticated" (click)="onLogout()" class="btn btn-danger">
+      Logout
+    </button>
   </div>
   <router-outlet></router-outlet>
 </div>

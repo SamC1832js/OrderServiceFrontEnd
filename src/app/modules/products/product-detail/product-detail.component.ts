@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Product } from '../../../model/models';
 import { ProductService } from 'src/app/service/product.service';
+import { ShoppingCartService } from 'src/app/service/shoppingCart.service';
 
 @Component({
   selector: 'product-detail',
@@ -17,9 +18,23 @@ export class ProductDetailComponent implements OnInit {
   @Output()
   removeFromCart = new EventEmitter<Product>();
 
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private shoppingCartService: ShoppingCartService
+  ) {}
 
   ngOnInit() {}
 
-  OnAddToCart() {}
+  OnAddToCart() {
+    if (this.product) {
+      this.shoppingCartService.addToCart(this.product.name, 1).subscribe({
+        next: (response) => {
+          console.log('Product added to cart:', response);
+        },
+        error: (error) => {
+          console.error('Failed to add product to cart:', error);
+        },
+      });
+    }
+  }
 }

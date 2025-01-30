@@ -53,6 +53,7 @@ export class AccountService {
 
   async isAuthenticated(): Promise<boolean> {
     const token = this.authTokenService.getToken();
+    console.log('Token:', token);
     if (!token) {
       console.error('No token found');
       return false;
@@ -60,19 +61,21 @@ export class AccountService {
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     });
 
     try {
       const response = await this.http
-        .get<{ message: string }>(
-          `${environment.apiBaseUrl}${this.apiHeader}/validateToken`,
-          { headers }
-        )
+        .get(`${environment.apiBaseUrl}${this.apiHeader}/validateToken`, {
+          headers,
+          responseType: 'text', // Handle plain text response
+        })
         .toPromise();
 
       console.log('Token validation response:', response);
-      if (response.message === 'Token is valid') {
+
+      // Check if the response indicates a valid token
+      if (response === 'Token is valid') {
         console.log('Token is valid');
         return true;
       } else {

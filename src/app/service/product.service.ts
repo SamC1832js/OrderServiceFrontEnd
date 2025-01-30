@@ -22,13 +22,6 @@ export class ProductService {
     );
   }
 
-  addProductToCart(product: Product) {
-    return this.http.post<Product>(
-      environment.apiBaseUrl + 'shoppingcart/',
-      product
-    );
-  }
-
   updateProduct(product: Product) {
     return this.http.put<Product>(
       environment.apiBaseUrl + 'products?productName=' + product.name,
