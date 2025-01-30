@@ -143,7 +143,8 @@ h2 {
 }
 
 .clear-btn {
-  background-color: #ff4d4da8;
+  background-color: #e43e3e8f;
+
   color: white;
   border: none;
   padding: 10px 20px;
@@ -154,11 +155,12 @@ h2 {
 }
 
 .clear-btn:hover {
-  background-color: #e43e3ed0;
+  background-color: #ff4d4db5;
 }
 
 .checkout-btn {
-  background-color: #861cc4dd;
+  background-color: #6200eacf;
+
   color: white;
   border: none;
   padding: 10px 20px;
@@ -178,5 +180,5 @@ h2 {
   -moz-transform: translateY(-1px);
   -ms-transform: translateY(-1px);
   -o-transform: translateY(-1px);
-  background-color: #861cc4fc;
+  background-color: var(--accent-color);
 }

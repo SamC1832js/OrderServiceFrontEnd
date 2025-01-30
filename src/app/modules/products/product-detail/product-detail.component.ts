@@ -1,6 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostBinding,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Product } from '../../../model/models';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ProductService } from 'src/app/service/product.service';
 import { ShoppingCartService } from 'src/app/service/shoppingCart.service';
 
@@ -11,9 +18,9 @@ import { ShoppingCartService } from 'src/app/service/shoppingCart.service';
 })
 export class ProductDetailComponent implements OnInit {
   @Input() product!: Product;
-
   @Output() addToCart = new EventEmitter<Product>();
   @Output() removeFromCart = new EventEmitter<Product>();
+  @HostBinding('class.product-detail-page') isProductDetailPage = false;
 
   constructor(
     private productService: ProductService,
@@ -23,6 +30,8 @@ export class ProductDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isProductDetailPage = this.router.url.includes('/products/');
+
     if (!this.product) {
       // Get product ID from route
       this.route.paramMap.subscribe((params) => {
@@ -57,5 +66,9 @@ export class ProductDetailComponent implements OnInit {
 
   viewProductDetail(id: string): void {
     this.router.navigate(['/products', id]);
+  }
+
+  goBackToProducts(): void {
+    this.router.navigate(['/products']);
   }
 }

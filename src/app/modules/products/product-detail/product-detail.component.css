@@ -13,6 +13,33 @@
   -o-transition: transform 0.2s ease-in-out, background 0.3s ease;
 }
 
+.product-detail-wrapper {
+  max-width: 30vw;
+  margin: auto;
+}
+.back-button {
+  background-color: transparent;
+  padding: 0.6rem;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  transform: translate(28rem, -1.5rem);
+  -webkit-transform: translate(28rem, -1.5rem);
+  -moz-transform: translate(28rem, -1.5rem);
+  -ms-transform: translate(28rem, -1.5rem);
+  -o-transform: translate(28rem, -1.5rem);
+  z-index: 10;
+}
+
+.back-button img {
+  width: 1.2rem;
+  height: 1.2rem;
+  filter: invert();
+  -webkit-filter: invert();
+}
+
 .product-detail:hover {
   background-color: var(--hover-bg);
   transform: scale(1.02);

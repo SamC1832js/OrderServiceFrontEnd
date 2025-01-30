@@ -1,14 +1,24 @@
-<div
-  class="product-detail"
-  *ngIf="product"
-  (click)="viewProductDetail(product.id.toString())"
->
-  <img [src]="product.imgUrl" alt="{{ product.name }}" />
-  <div class="product-info">
-    <p class="product-name">{{ product.name }}</p>
-    <p class="product-price">${{ product.price }}</p>
-    <button (click)="OnAddToCart(); $event.stopPropagation()">
-      Add to Cart
-    </button>
+<div class="product-detail-wrapper">
+  <button
+    *ngIf="isProductDetailPage"
+    class="back-button"
+    (click)="goBackToProducts()"
+  >
+    <img src="assets/arrow-go-back-fill.svg" />
+  </button>
+
+  <div
+    class="product-detail"
+    *ngIf="product"
+    (click)="viewProductDetail(product.id.toString())"
+  >
+    <img [src]="product.imgUrl" alt="{{ product.name }}" />
+    <div class="product-info">
+      <p class="product-name">{{ product.name }}</p>
+      <p class="product-price">${{ product.price }}</p>
+      <button (click)="OnAddToCart(); $event.stopPropagation()">
+        Add to Cart
+      </button>
+    </div>
   </div>
 </div>
