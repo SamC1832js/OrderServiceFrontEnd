@@ -31,9 +31,6 @@ const routes: Routes = [
     ],
   },
 
-  // Default redirect
-  { path: '', redirectTo: '/account/login', pathMatch: 'full' },
-
   // Wildcard route (should always be last)
   { path: '**', redirectTo: '/account/login' },
 ];

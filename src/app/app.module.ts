@@ -8,7 +8,6 @@ import { ProductService } from './service/product.service';
 import { HttpClientModule } from '@angular/common/http';
 import { NavComponent } from './modules/nav/nav.component';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 import { AccountModule } from './modules/account/account.module';
 import { ShoppingCartService } from './service/shoppingCart.service';
 import { ShoppingCartComponent } from './modules/shoppingcart/shoppingcart.component';
@@ -17,7 +16,6 @@ import { AuthTokenService } from './service/authToken.service';
 import { OrderService } from './service/order.service';
 import { AccountService } from './service/account.service';
 import { ProfileComponent } from './modules/account/profile/profile.component';
-import { AccountComponent } from './modules/account/account.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +28,6 @@ import { AccountComponent } from './modules/account/account.component';
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    RouterModule,
     AppRoutingModule,
     AccountModule,
     ProductsModule,
