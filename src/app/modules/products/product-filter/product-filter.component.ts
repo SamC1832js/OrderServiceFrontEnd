@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-product-filter',
+  selector: 'product-filter',
   templateUrl: './product-filter.component.html',
-  styleUrls: ['./product-filter.component.css']
+  styleUrls: ['./product-filter.component.css'],
 })
 export class ProductFilterComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

@@ -26,8 +26,8 @@ export class ShoppingCartComponent implements OnInit, AfterViewInit {
 
   fetchShoppingCart() {
     this.shoppingCartService.getShoppingCart().subscribe({
-      next: (response) => {
-        this.cart = response;
+      next: (cart) => {
+        this.cart = cart;
         console.log('Shopping cart:', this.cart);
       },
       error: (error) => {
@@ -38,9 +38,9 @@ export class ShoppingCartComponent implements OnInit, AfterViewInit {
 
   updateQuantity(productName: string, quantity: number) {
     this.shoppingCartService.updateCart(productName, quantity).subscribe({
-      next: (response) => {
-        console.log('Quantity updated:', response);
-        this.fetchShoppingCart(); // Refresh the cart
+      next: (updatedCart) => {
+        console.log('Quantity updated:', updatedCart);
+        this.cart = updatedCart; // Update local cart state directly
       },
       error: (error) => {
         console.error('Failed to update quantity:', error);
@@ -50,13 +50,12 @@ export class ShoppingCartComponent implements OnInit, AfterViewInit {
 
   removeProduct(productName: string) {
     this.shoppingCartService.removeFromCart(productName).subscribe({
-      next: (response) => {
-        console.log('Product removed:', response);
-        this.fetchShoppingCart(); // Refresh the cart on success
+      next: (updatedCart) => {
+        console.log('Product removed:', updatedCart);
+        this.cart = updatedCart; // Update local cart state directly
       },
       error: (error) => {
         console.error('Failed to remove product:', error);
-        // Handle actual errors here (e.g., network issues)
       },
     });
   }
@@ -72,9 +71,8 @@ export class ShoppingCartComponent implements OnInit, AfterViewInit {
     }
     if (confirmClear) {
       this.shoppingCartService.clearCart().subscribe({
-        next: (response) => {
-          console.log('Cart cleared:', response);
-          this.fetchShoppingCart(); // Refresh the cart
+        next: (updatedCart) => {
+          this.cart = updatedCart; // Refresh the cart
         },
         error: (error) => {
           console.error('Failed to clear cart:', error);

@@ -1,7 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject, Subscription } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/model/models';
 import { AccountService } from 'src/app/service/account.service';
 
@@ -13,10 +10,7 @@ import { AccountService } from 'src/app/service/account.service';
 export class ProfileComponent implements OnInit {
   user!: User;
 
-  constructor(
-    private accountService: AccountService,
-    private fb: FormBuilder
-  ) {}
+  constructor(private accountService: AccountService) {}
 
   ngOnInit(): void {
     this.accountService

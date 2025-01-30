@@ -4,17 +4,27 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { ShoppingCart, CartItem, Product, OrderItem } from '../model/models';
 import { environment } from 'src/environments/environment';
 import { AuthTokenService } from './authToken.service';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, filter, map, tap } from 'rxjs/operators';
+import { AccountService } from './account.service';
 @Injectable({
   providedIn: 'root',
 })
 export class ShoppingCartService {
   apiHeader: string = 'shoppingcart';
+  private itemCountSubject = new BehaviorSubject<number>(0);
+  public itemCount$ = this.itemCountSubject.asObservable();
 
   constructor(
     private http: HttpClient,
-    private authTokenService: AuthTokenService
-  ) {}
+    private authTokenService: AuthTokenService,
+    private accountService: AccountService
+  ) {
+    this.accountService.isAuthenticated$
+      .pipe(filter((isAuthenticated) => !isAuthenticated))
+      .subscribe(() => {
+        this.itemCountSubject.next(0); // Immediate count reset
+      });
+  }
 
   // Get the current user's shopping cart
   getShoppingCart(): Observable<ShoppingCart> {
@@ -22,7 +32,8 @@ export class ShoppingCartService {
     return this.http
       .get<any>(`${environment.apiBaseUrl}${this.apiHeader}`, { headers })
       .pipe(
-        map((rawCart) => this.transformCartData(rawCart)), // Transform raw cart data
+        map((rawCart) => this.transformCartData(rawCart)),
+        tap((cart) => this.updateItemCount(cart)),
         catchError((error) => {
           console.error('Error fetching shopping cart:', error);
           return throwError(() => new Error('Failed to fetch shopping cart'));
@@ -37,53 +48,56 @@ export class ShoppingCartService {
     const headers = this.authTokenService.getAuthHeaders();
     const body: CartItem = { productName, quantity };
 
-    return this.http.post<ShoppingCart>(
-      `${environment.apiBaseUrl}${this.apiHeader}`,
-      body,
-      {
+    return this.http
+      .post<any>(`${environment.apiBaseUrl}${this.apiHeader}`, body, {
         headers,
-      }
-    );
+      })
+      .pipe(
+        map((rawCart) => this.transformCartData(rawCart)),
+        tap((cart) => this.updateItemCount(cart))
+      );
   }
 
   // Update the quantity of a product in the shopping cart
   updateCart(productName: string, quantity: number): Observable<ShoppingCart> {
     const headers = this.authTokenService.getAuthHeaders();
-    const body: CartItem = {
-      productName,
-      quantity,
-    };
-    return this.http.put<ShoppingCart>(
-      `${environment.apiBaseUrl}${this.apiHeader}`,
-      body,
-      {
-        headers,
-      }
-    );
+    const body: CartItem = { productName, quantity };
+
+    return this.http
+      .put<any>(`${environment.apiBaseUrl}${this.apiHeader}`, body, { headers })
+      .pipe(
+        map((rawCart) => this.transformCartData(rawCart)),
+        tap((cart) => this.updateItemCount(cart))
+      );
   }
 
   // Remove a product from the shopping cart
-  removeFromCart(productName: string): Observable<string> {
+  removeFromCart(productName: string): Observable<ShoppingCart> {
     const headers = this.authTokenService.getAuthHeaders();
     const params = new HttpParams().set('productName', productName);
 
-    return this.http.delete(`${environment.apiBaseUrl}${this.apiHeader}`, {
-      headers,
-      params,
-      responseType: 'text',
-    });
+    return this.http
+      .delete<any>(`${environment.apiBaseUrl}${this.apiHeader}`, {
+        headers,
+        params,
+      })
+      .pipe(
+        map((rawCart) => this.transformCartData(rawCart)),
+        tap((cart) => this.updateItemCount(cart))
+      );
   }
 
   // Clear the entire shopping cart
-  clearCart(): Observable<string> {
+  clearCart(): Observable<ShoppingCart> {
     const headers = this.authTokenService.getAuthHeaders();
-    return this.http.delete(
-      `${environment.apiBaseUrl}${this.apiHeader}/clear`,
-      {
+    return this.http
+      .delete<any>(`${environment.apiBaseUrl}${this.apiHeader}/clear`, {
         headers,
-        responseType: 'text',
-      }
-    );
+      })
+      .pipe(
+        map((rawCart) => this.transformCartData(rawCart)),
+        tap((cart) => this.updateItemCount(cart))
+      );
   }
 
   private parseProductString(productStr: string): Product {
@@ -118,5 +132,9 @@ export class ShoppingCartService {
       products: transformedProducts,
       totalPrice: raw.totalPrice,
     };
+  }
+
+  private updateItemCount(cart: ShoppingCart): void {
+    this.itemCountSubject.next(cart.products.length);
   }
 }
