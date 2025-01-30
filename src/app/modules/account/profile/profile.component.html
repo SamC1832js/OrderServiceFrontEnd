@@ -1,3 +1,29 @@
-<p>
-  profile works!
-</p>
+<div class="max-w-2xl mx-auto p-6">
+  <!-- Profile Header -->
+  <div class="mb-8 text-center">
+    <div class="profile-avatar" *ngIf="user">
+      <span class="profile-initial">{{
+        user?.firstName?.charAt(0) | uppercase
+      }}</span>
+    </div>
+    <h1 class="profile-title" *ngIf="user">Profile Information</h1>
+  </div>
+
+  <!-- Profile Content -->
+  <div class="profile-content" *ngIf="user">
+    <div class="mb-6">
+      <label class="label">First Name</label>
+      <p class="text">{{ user?.firstName }}</p>
+    </div>
+
+    <div class="mb-6">
+      <label class="label">Last Name</label>
+      <p class="text">{{ user?.lastName }}</p>
+    </div>
+
+    <div class="mb-6">
+      <label class="label">Email</label>
+      <p class="text">{{ user?.email }}</p>
+    </div>
+  </div>
+</div>

@@ -3,14 +3,25 @@ import { CommonModule } from '@angular/common';
 import { ProductsComponent } from './products.component';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
+import { RouterModule, Routes } from '@angular/router';
+
+const routes: Routes = [
+  { path: '', component: ProductListComponent },
+  { path: ':id', component: ProductDetailComponent },
+];
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule.forChild(routes)],
   declarations: [
     ProductsComponent,
     ProductListComponent,
     ProductDetailComponent,
   ],
-  exports: [ProductsComponent, ProductListComponent, ProductDetailComponent],
+  exports: [
+    ProductsComponent,
+    ProductListComponent,
+    ProductDetailComponent,
+    RouterModule,
+  ],
 })
 export class ProductsModule {}

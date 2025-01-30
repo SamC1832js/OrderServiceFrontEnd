@@ -3,28 +3,21 @@ import { CommonModule } from '@angular/common';
 import { AccountComponent } from './account.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { FormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router';
-import { OrdersComponent } from './orders/orders.component';
-import { ProfileComponent } from './profile/profile.component';
+import { RouterModule } from '@angular/router';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AccountService } from 'src/app/service/account.service';
+import { OrdersModule } from '../orders/orders.module';
 
-const routes: Routes = [
-  {
-    path: 'account',
-    component: AccountComponent,
-    children: [
-      { path: 'login', component: LoginComponent },
-      { path: 'register', component: RegisterComponent },
-      { path: 'orders', component: OrdersComponent },
-      { path: 'profile', component: ProfileComponent },
-      { path: '', redirectTo: 'login', pathMatch: 'full' }, // Default route
-    ],
-  },
-];
 @NgModule({
-  imports: [CommonModule, FormsModule, RouterModule.forChild(routes)],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    OrdersModule,
+  ],
   declarations: [AccountComponent, LoginComponent, RegisterComponent],
   exports: [AccountComponent, LoginComponent, RegisterComponent],
-  providers: [],
+  providers: [AccountService],
 })
 export class AccountModule {}

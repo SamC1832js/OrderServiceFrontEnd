@@ -16,9 +16,16 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { AuthTokenService } from './service/authToken.service';
 import { OrderService } from './service/order.service';
 import { AccountService } from './service/account.service';
+import { ProfileComponent } from './modules/account/profile/profile.component';
+import { AccountComponent } from './modules/account/account.component';
 
 @NgModule({
-  declarations: [AppComponent, NavComponent, ShoppingCartComponent],
+  declarations: [
+    AppComponent,
+    NavComponent,
+    ShoppingCartComponent,
+    ProfileComponent,
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,

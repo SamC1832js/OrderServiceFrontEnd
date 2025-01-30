@@ -2,21 +2,32 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AuthTokenService } from './authToken.service';
-import { tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
+import { User } from '../model/models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
+  getCurrentUser() {
+    throw new Error('Method not implemented.');
+  }
   apiHeader: string = 'users';
-  private authStatus = new BehaviorSubject<boolean>(false);
-  isAuthenticated$ = this.authStatus.asObservable();
+  private readonly authStatus = new BehaviorSubject<boolean>(false);
+  readonly isAuthenticated$ = this.authStatus.asObservable();
 
   constructor(
     private http: HttpClient,
     private authTokenService: AuthTokenService
-  ) {}
+  ) {
+    this.initializeAuthStatus();
+  }
+
+  private async initializeAuthStatus(): Promise<void> {
+    const isAuth = await this.isAuthenticated();
+    this.authStatus.next(isAuth);
+  }
 
   login(email: string, password: string) {
     const body = { email, password };
@@ -34,6 +45,10 @@ export class AccountService {
           // Store the token using AuthTokenService
           this.authTokenService.setToken(response.Authorization);
           this.authStatus.next(true);
+        }),
+        catchError((error) => {
+          this.authStatus.next(false);
+          throw error;
         })
       );
   }
@@ -48,13 +63,35 @@ export class AccountService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    this.http.post(`${environment.apiBaseUrl + this.apiHeader}/register`, body);
+    this.http.post(
+      `${environment.apiBaseUrl + this.apiHeader}/register`,
+      body,
+      { headers }
+    );
     return this.login(email, password);
   }
 
-  logout() {
+  logout(): void {
     this.authTokenService.clearToken();
     this.authStatus.next(false);
+  }
+
+  getProfile(): Promise<User> {
+    return this.isAuthenticated().then((isAuth) => {
+      if (!isAuth) {
+        return Promise.reject('User is not authenticated');
+      }
+      const token = this.authTokenService.getToken();
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
+      });
+      return this.http
+        .get<User>(`${environment.apiBaseUrl + this.apiHeader}/profile`, {
+          headers,
+        })
+        .toPromise();
+    });
   }
 
   async isAuthenticated(): Promise<boolean> {
