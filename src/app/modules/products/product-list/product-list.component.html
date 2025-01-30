@@ -1,7 +1,17 @@
-<div class="product-list">
-  <ul>
-    <li *ngFor="let product of products">
-      <product-detail [product]="product"></product-detail>
-    </li>
-  </ul>
+<div class="product-container">
+  <!-- Product Filters -->
+  <product-filter
+    [products]="products"
+    (filteredProducts)="updateFilteredProducts($event)"
+  >
+  </product-filter>
+
+  <!-- Product List -->
+  <div class="product-list">
+    <ul>
+      <li *ngFor="let product of filteredProducts">
+        <product-detail [product]="product"></product-detail>
+      </li>
+    </ul>
+  </div>
 </div>

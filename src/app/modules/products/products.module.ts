@@ -4,6 +4,8 @@ import { ProductsComponent } from './products.component';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { RouterModule, Routes } from '@angular/router';
+import { ProductFilterComponent } from './product-filter/product-filter.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   { path: '', component: ProductListComponent },
@@ -11,16 +13,23 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [CommonModule, RouterModule.forChild(routes)],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   declarations: [
     ProductsComponent,
     ProductListComponent,
     ProductDetailComponent,
+    ProductFilterComponent,
   ],
   exports: [
     ProductsComponent,
     ProductListComponent,
     ProductDetailComponent,
+    ProductFilterComponent,
     RouterModule,
   ],
 })

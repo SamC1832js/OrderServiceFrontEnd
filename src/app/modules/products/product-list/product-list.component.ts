@@ -8,6 +8,7 @@ import { ProductService } from 'src/app/service/product.service';
 })
 export class ProductListComponent implements OnInit {
   products!: Product[];
+  filteredProducts!: Product[];
   constructor(private productService: ProductService) {}
 
   ngOnInit() {
@@ -19,5 +20,10 @@ export class ProductListComponent implements OnInit {
       .catch((error) => {
         console.error('Error fetching products:', error);
       });
+    this.filteredProducts = [...this.products];
+  }
+
+  updateFilteredProducts(filteredProducts: Product[]): void {
+    this.filteredProducts = filteredProducts;
   }
 }

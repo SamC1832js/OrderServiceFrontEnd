@@ -1,3 +1,91 @@
-<form class="product-filter">
-  <p>Filter result</p>
+<!-- product-filters.component.html -->
+<form [formGroup]="filterForm" class="filter-container">
+  <!-- Price Filter -->
+  <div class="filter-section">
+    <h3>Price</h3>
+    <div formGroupName="prices">
+      <div
+        *ngFor="let range of priceRanges.slice(0, visiblePriceRanges)"
+        class="filter-option"
+      >
+        <label>
+          <input
+            type="checkbox"
+            [formControlName]="range.min + '-' + range.max"
+          />
+          {{ range.label }} ({{
+            priceRangeCounts[range.min + "-" + range.max] || 0
+          }})
+        </label>
+      </div>
+      <button
+        *ngIf="priceRanges.length > visiblePriceRanges"
+        type="button"
+        class="more-button"
+        (click)="togglePriceRanges()"
+      >
+        + MORE
+      </button>
+      <button
+        *ngIf="visiblePriceRanges > 5"
+        type="button"
+        class="more-button"
+        (click)="togglePriceRanges()"
+      >
+        - LESS
+      </button>
+    </div>
+  </div>
+
+  <!-- Brand Filter -->
+  <div class="filter-section">
+    <h3>Brand</h3>
+    <div formGroupName="brands">
+      <div
+        *ngFor="let brand of showAllBrands ? brands : brands.slice(0, 5)"
+        class="filter-option"
+      >
+        <label>
+          <input type="checkbox" [formControlName]="brand" />
+          {{ brand }} ({{ brandCounts[brand] || 0 }})
+        </label>
+      </div>
+      <button
+        *ngIf="brands.length > 5"
+        type="button"
+        class="more-button"
+        (click)="showAllBrands = !showAllBrands"
+      >
+        {{ showAllBrands ? "- LESS" : "+ MORE" }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Category Filter -->
+  <div class="filter-section">
+    <h3>Category</h3>
+    <div formGroupName="categories">
+      <div
+        *ngFor="
+          let category of showAllCategories
+            ? categories
+            : categories.slice(0, 5)
+        "
+        class="filter-option"
+      >
+        <label>
+          <input type="checkbox" [formControlName]="category" />
+          {{ category }} ({{ categoryCounts[category] || 0 }})
+        </label>
+      </div>
+      <button
+        *ngIf="categories.length > 5"
+        type="button"
+        class="more-button"
+        (click)="showAllCategories = !showAllCategories"
+      >
+        {{ showAllCategories ? "- LESS" : "+ MORE" }}
+      </button>
+    </div>
+  </div>
 </form>
