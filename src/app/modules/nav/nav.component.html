@@ -1,52 +1,6 @@
-<nav class="navbar">
-  <div class="nav-container">
-    <div class="logo">
-      <h1>Computer Parts Shop</h1>
-    </div>
-
-    <div class="nav-items">
-      <div
-        class="nav-item dropdown"
-        (mouseenter)="showDropdown = true"
-        (mouseleave)="showDropdown = false"
-      >
-        <button class="account-btn">
-          <i class="fas fa-user"></i>
-          <span>Account</span>
-        </button>
-
-        <div class="dropdown-content" *ngIf="showDropdown">
-          <ng-container
-            *ngIf="!(isAuthenticated$ | async); else authenticatedMenu"
-          >
-            <a routerLink="/login" class="dropdown-item">Login</a>
-            <a routerLink="/register" class="dropdown-item">Register</a>
-          </ng-container>
-
-          <ng-template #authenticatedMenu>
-            <div class="welcome-message" *ngIf="user$ | async as user">
-              > Welcome, {{ user.firstName }} {{ user.lastName }}
-            </div>
-            <a routerLink="/profile" class="dropdown-item">Profile</a>
-            <a href="#" class="dropdown-item" (click)="logOut()">Logout</a>
-          </ng-template>
-        </div>
-      </div>
-
-      <div class="nav-item">
-        <button class="orders-btn" routerLink="/orders">
-          <i class="fas fa-clipboard-list"></i>
-          <span>Orders</span>
-        </button>
-      </div>
-
-      <div class="nav-item">
-        <button class="cart-btn" routerLink="/cart">
-          <i class="fas fa-shopping-cart"></i>
-          <span class="badge">{{ cartItemCount }}</span>
-          <span>Cart</span>
-        </button>
-      </div>
-    </div>
-  </div>
-</nav>
+<div class="navbar">
+  <label> Computer Parts Shop</label>
+  <button class="Account">Account</button>
+  <button class="Orders">Orders</button>
+  <button class="Cart">Cart</button>
+</div>

@@ -1,19 +1,15 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { ShoppingCart, CartItem, Product, OrderItem } from '../model/models';
 import { environment } from 'src/environments/environment';
 import { AuthTokenService } from './authToken.service';
-import { catchError, distinctUntilChanged, map, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
 export class ShoppingCartService {
   apiHeader: string = 'shoppingcart';
-  private cartSubject = new BehaviorSubject<ShoppingCart | null>(null);
-  private currentCart: ShoppingCart | null = null;
-
-  cart$: Observable<ShoppingCart | null> = this.cartSubject.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -22,20 +18,14 @@ export class ShoppingCartService {
 
   // Get the current user's shopping cart
   getShoppingCart(): Observable<ShoppingCart> {
-    if (this.currentCart) return of(this.currentCart);
-
     const headers = this.authTokenService.getAuthHeaders();
     return this.http
       .get<any>(`${environment.apiBaseUrl}${this.apiHeader}`, { headers })
       .pipe(
-        map((raw) => {
-          const transformed = this.transformProductData(raw);
-          this.cartSubject.next(transformed);
-          return transformed;
-        }),
+        map((rawCart) => this.transformCartData(rawCart)), // Transform raw cart data
         catchError((error) => {
-          this.cartSubject.next(null);
-          return throwError(() => error);
+          console.error('Error fetching shopping cart:', error);
+          return throwError(() => new Error('Failed to fetch shopping cart'));
         })
       );
   }
@@ -115,18 +105,18 @@ export class ShoppingCartService {
     };
   }
 
-  private transformProductData(raw: any): ShoppingCart {
-    const transformedProducts: OrderItem[] = Object.entries(raw.products).map(
-      ([productStr, quantity]) => ({
-        product: this.parseProductString(productStr),
-        quantity: quantity as number,
-      })
-    );
+  private transformCartData(rawCart: any): ShoppingCart {
+    const transformedProducts: OrderItem[] = Object.entries(
+      rawCart.products
+    ).map(([productStr, quantity]) => ({
+      product: this.parseProductString(productStr),
+      quantity: quantity as number,
+    }));
 
     return {
-      id: raw.id,
+      id: rawCart.id,
       products: transformedProducts,
-      totalPrice: raw.totalPrice,
+      totalPrice: rawCart.totalPrice,
     };
   }
 }

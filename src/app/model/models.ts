@@ -1,7 +1,6 @@
 export interface User {
   id: number;
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
   password: string;
 }
@@ -19,7 +18,7 @@ export interface Product {
 export interface Order {
   id: number;
   products: OrderItem[];
-  totalPrice: number;
+  total: number;
   date: Date;
 }
 
