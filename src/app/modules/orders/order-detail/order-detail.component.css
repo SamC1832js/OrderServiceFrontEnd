@@ -1,0 +1,29 @@
+/* Order Detail */
+.order-detail {
+  background-color: var(--secondary-bg);
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.order-item img {
+  width: 60px;
+  height: 60px;
+  border-radius: 5px;
+}
+
+.order-item h4 {
+  margin: 0;
+}
+
+.order-item p {
+  margin: 0;
+}

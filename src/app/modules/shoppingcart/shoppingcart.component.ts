@@ -61,24 +61,34 @@ export class ShoppingCartComponent implements OnInit, AfterViewInit {
     });
   }
 
-  clearCart() {
-    this.shoppingCartService.clearCart().subscribe({
-      next: (response) => {
-        console.log('Cart cleared:', response);
-        this.fetchShoppingCart(); // Refresh the cart
-      },
-      error: (error) => {
-        console.error('Failed to clear cart:', error);
-      },
-    });
+  clearCart(isCheckout: boolean = false) {
+    let confirmClear = false;
+    if (!isCheckout) {
+      confirmClear = window.confirm(
+        'Are you sure you want to clear your cart?'
+      );
+    } else {
+      confirmClear = true;
+    }
+    if (confirmClear) {
+      this.shoppingCartService.clearCart().subscribe({
+        next: (response) => {
+          console.log('Cart cleared:', response);
+          this.fetchShoppingCart(); // Refresh the cart
+        },
+        error: (error) => {
+          console.error('Failed to clear cart:', error);
+        },
+      });
+    }
   }
 
   checkoutCart() {
     this.orderService.createOrder().subscribe({
       next: (order) => {
         console.log('Order created:', order);
-        this.clearCart(); // Clear cart after successful order creation
-        this.router.navigate(['/orders', order.id]); // Navigate to order detail
+        this.clearCart(true); // Clear cart after successful order creation
+        this.router.navigate(['/account/orders', order.id]); // Navigate to order detail
       },
       error: (error) => {
         console.error('Checkout failed:', error);

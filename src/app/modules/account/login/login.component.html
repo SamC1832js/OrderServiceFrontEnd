@@ -1,5 +1,9 @@
-<h3>Login</h3>
-<form (ngSubmit)="onLoginSubmit(loginForm)" #loginForm="ngForm">
+<form
+  (ngSubmit)="onLoginSubmit(loginForm)"
+  #loginForm="ngForm"
+  class="login-form"
+>
+  <h3>Log in</h3>
   <div>
     <label for="email">Email:</label>
     <input type="email" id="email" name="email" #email ngModel required />
@@ -16,5 +20,7 @@
     />
   </div>
   <button type="submit" [disabled]="!loginForm.form.valid">Login</button>
+  <p>
+    Don't have an account? <a routerLink="/account/register">Register here</a>
+  </p>
 </form>
-<p>Don't have an account? <a routerLink="/register">Register here</a></p>

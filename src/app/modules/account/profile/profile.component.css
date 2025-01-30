@@ -26,7 +26,7 @@
   margin-right: auto;
   margin-bottom: 1rem;
   border-radius: 50%;
-  background-color: #e5e7eb;
+  background-color: #333;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,21 +34,23 @@
 
 .profile-initial {
   font-size: 3rem;
-  color: #4b5563;
+  color: #bbb;
 }
 
 .profile-title {
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
+  color: #fff;
 }
 
 .profile-content {
-  background-color: #fff;
+  background-color: #1f1f1f;
   border-radius: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.1),
+    0 2px 4px -1px rgba(255, 255, 255, 0.06);
   padding: 1.5rem;
+  border: 1px solid #333;
 }
 
 .label {
@@ -56,9 +58,10 @@
   font-size: 0.875rem;
   font-weight: 500;
   margin-bottom: 0.25rem;
-  color: #4b5563;
+  color: #aaa;
 }
 
 .text {
   font-size: 1.125rem;
+  color: #e0e0e0;
 }

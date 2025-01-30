@@ -1,8 +1,21 @@
 .product-detail {
   margin-bottom: 5rem;
-  border-style: solid;
-  border-color: beige
-  ;
+  border: 1px solid var(--border-color);
+  background-color: var(--secondary-bg);
+  margin-bottom: 5rem;
+  padding: 1rem;
+  border-radius: 8px;
+  transition: transform 0.2s ease-in-out, background 0.3s ease;
+  height: 21rem;
+  -webkit-transition: transform 0.2s ease-in-out, background 0.3s ease;
+  -moz-transition: transform 0.2s ease-in-out, background 0.3s ease;
+  -ms-transition: transform 0.2s ease-in-out, background 0.3s ease;
+  -o-transition: transform 0.2s ease-in-out, background 0.3s ease;
+}
+
+.product-detail:hover {
+  background-color: var(--hover-bg);
+  transform: scale(1.02);
 }
 
 .product-detail p {
@@ -17,9 +30,29 @@
 .product-detail .product-price {
   margin-top: 1rem;
   font-size: 1.5rem;
+  color: whitesmoke;
 }
 
 .product-detail img {
   width: 7rem;
   height: auto;
+  border-radius: 8px;
+}
+
+.product-detail button {
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  -webkit-transition: background 0.3s ease-in-out;
+  -moz-transition: background 0.3s ease-in-out;
+  -ms-transition: background 0.3s ease-in-out;
+  -o-transition: background 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: var(--hover-bg);
 }

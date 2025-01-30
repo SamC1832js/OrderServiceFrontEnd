@@ -1,0 +1,29 @@
+/* Order List */
+.order-list {
+  padding: 2rem;
+}
+
+.order-card {
+  display: block;
+  text-decoration: none;
+  background-color: var(--secondary-bg);
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border-color);
+  transition: transform 0.2s ease-in-out, background 0.3s ease;
+  color: var(--text-color);
+}
+
+.order-card:hover {
+  transform: scale(1.02);
+}
+
+.order-card a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+.order-card a:hover {
+  text-decoration: underline;
+}

@@ -10,9 +10,6 @@ import { User } from '../model/models';
   providedIn: 'root',
 })
 export class AccountService {
-  getCurrentUser() {
-    throw new Error('Method not implemented.');
-  }
   apiHeader: string = 'users';
   private readonly authStatus = new BehaviorSubject<boolean>(false);
   readonly isAuthenticated$ = this.authStatus.asObservable();

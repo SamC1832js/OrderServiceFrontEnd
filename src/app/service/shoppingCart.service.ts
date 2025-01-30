@@ -105,18 +105,18 @@ export class ShoppingCartService {
     };
   }
 
-  private transformCartData(rawCart: any): ShoppingCart {
-    const transformedProducts: OrderItem[] = Object.entries(
-      rawCart.products
-    ).map(([productStr, quantity]) => ({
-      product: this.parseProductString(productStr),
-      quantity: quantity as number,
-    }));
+  private transformCartData(raw: any): ShoppingCart {
+    const transformedProducts: OrderItem[] = Object.entries(raw.products).map(
+      ([productStr, quantity]) => ({
+        product: this.parseProductString(productStr),
+        quantity: quantity as number,
+      })
+    );
 
     return {
-      id: rawCart.id,
+      id: raw.id,
       products: transformedProducts,
-      totalPrice: rawCart.totalPrice,
+      totalPrice: raw.totalPrice,
     };
   }
 }

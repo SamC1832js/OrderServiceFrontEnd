@@ -1,8 +1,14 @@
-<div class="product-detail" *ngIf="product">
+<div
+  class="product-detail"
+  *ngIf="product"
+  (click)="viewProductDetail(product.id.toString())"
+>
   <img [src]="product.imgUrl" alt="{{ product.name }}" />
   <div class="product-info">
     <p class="product-name">{{ product.name }}</p>
-    <p class="product-price">{{ product.price }}</p>
-    <button (click)="OnAddToCart()">Add to cart</button>
+    <p class="product-price">${{ product.price }}</p>
+    <button (click)="OnAddToCart(); $event.stopPropagation()">
+      Add to Cart
+    </button>
   </div>
 </div>

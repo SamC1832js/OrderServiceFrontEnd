@@ -1,5 +1,9 @@
-<h2>Register</h2>
-<form (ngSubmit)="onRegisterSubmit(registerForm)" #registerForm="ngForm">
+<form
+  (ngSubmit)="onRegisterSubmit(registerForm)"
+  #registerForm="ngForm"
+  class="register-form"
+>
+  <h2>Register</h2>
   <div>
     <label for="first name">First Name:</label>
     <input type="text" id="firstname" name="first_name" ngModel required />
@@ -17,5 +21,5 @@
     <input type="password" id="password" name="password" ngModel required />
   </div>
   <button type="submit" [disabled]="!registerForm.form.valid">Register</button>
+  <p>Already have an account? <a routerLink="account/login">Login here</a></p>
 </form>
-<p>Already have an account? <a routerLink="/login">Login here</a></p>

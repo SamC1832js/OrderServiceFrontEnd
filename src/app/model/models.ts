@@ -19,7 +19,7 @@ export interface Product {
 export interface Order {
   id: number;
   products: OrderItem[];
-  total: number;
+  totalPrice: number;
   date: Date;
 }
 

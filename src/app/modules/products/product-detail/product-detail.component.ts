@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Product } from '../../../model/models';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from 'src/app/service/product.service';
 import { ShoppingCartService } from 'src/app/service/shoppingCart.service';
 
@@ -9,21 +10,37 @@ import { ShoppingCartService } from 'src/app/service/shoppingCart.service';
   styleUrls: ['./product-detail.component.css'],
 })
 export class ProductDetailComponent implements OnInit {
-  @Input()
-  product!: Product;
+  @Input() product!: Product;
 
-  @Output()
-  addToCart = new EventEmitter<Product>();
-
-  @Output()
-  removeFromCart = new EventEmitter<Product>();
+  @Output() addToCart = new EventEmitter<Product>();
+  @Output() removeFromCart = new EventEmitter<Product>();
 
   constructor(
     private productService: ProductService,
-    private shoppingCartService: ShoppingCartService
+    private shoppingCartService: ShoppingCartService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
-  ngOnInit() {}
+  ngOnInit(): void {
+    if (!this.product) {
+      // Get product ID from route
+      this.route.paramMap.subscribe((params) => {
+        const id = params.get('id');
+        if (id) {
+          const productId = parseInt(id, 10); // Convert id to a number
+          this.productService.getProductById(id).subscribe({
+            next: (product) => {
+              this.product = product;
+            },
+            error: (error) => {
+              console.error('Failed to fetch product:', error);
+            },
+          });
+        }
+      });
+    }
+  }
 
   OnAddToCart() {
     if (this.product) {
@@ -36,5 +53,9 @@ export class ProductDetailComponent implements OnInit {
         },
       });
     }
+  }
+
+  viewProductDetail(id: string): void {
+    this.router.navigate(['/products', id]);
   }
 }

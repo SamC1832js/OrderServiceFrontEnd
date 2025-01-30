@@ -1,7 +1,5 @@
-.product-list {
-}
-
 .product-list ul {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 12rem));
+  gap: 3rem;
 }

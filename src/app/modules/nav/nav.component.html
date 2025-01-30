@@ -1,6 +1,22 @@
 <div class="navbar">
-  <label> Computer Parts Shop</label>
-  <button class="Account">Account</button>
-  <button class="Orders">Orders</button>
-  <button class="Cart">Cart</button>
+  <label class="navbar-brand">Computer Parts Shop</label>
+  <a routerLink="/products" class="nav-button">Products</a>
+  <div class="dropdown" *ngIf="isAuthenticated$ | async; else guestDropdown">
+    <button class="dropdown-button">Account</button>
+    <div class="dropdown-content">
+      <a routerLink="/account/profile">Profile</a>
+      <a routerLink="/account/orders">Orders</a>
+      <button class="logout-button" (click)="logout()">Logout</button>
+    </div>
+  </div>
+  <ng-template #guestDropdown>
+    <div class="dropdown">
+      <button class="dropdown-button">Account</button>
+      <div class="dropdown-content">
+        <a routerLink="/account/login">Login</a>
+        <a routerLink="/account/register">Register</a>
+      </div>
+    </div>
+  </ng-template>
+  <a routerLink="/cart" class="nav-button">Cart</a>
 </div>
