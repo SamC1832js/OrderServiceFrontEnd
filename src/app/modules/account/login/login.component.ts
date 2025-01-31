@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
+  errorMessage: string = '';
+
   constructor(private accountService: AccountService, private router: Router) {}
 
   ngOnInit() {}
@@ -19,11 +21,11 @@ export class LoginComponent implements OnInit {
       next: (response) => {
         this.router.navigate(['/account/profile']);
         console.log('Login successful', response);
-        // Handle successful login (e.g., navigate to another page)
       },
       error: (error) => {
         console.error('Login failed', error);
-        // Handle login error (e.g., show an error message)
+        this.errorMessage =
+          'Login failed. Please check your email and password.';
       },
     });
   }

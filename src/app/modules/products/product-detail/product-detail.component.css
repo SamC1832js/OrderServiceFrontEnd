@@ -26,11 +26,11 @@
   -ms-border-radius: 50%;
   -o-border-radius: 50%;
   position: absolute;
-  transform: translate(27rem, 2rem);
-  -webkit-transform: translate(27rem, 2rem);
-  -moz-transform: translate(27rem, 2rem);
-  -ms-transform: translate(27rem, 2rem);
-  -o-transform: translate(27rem, 2rem);
+  transform: translate(26vw, 3vh);
+  -webkit-transform: translate(26vw, 3vh);
+  -moz-transform: translate(26vw, 3vh);
+  -ms-transform: translate(26vw, 3vh);
+  -o-transform: translate(26vw, 3vh);
   z-index: 10;
 }
 

@@ -77,3 +77,13 @@
 .login-form a:hover {
   text-decoration: underline;
 }
+
+.error-message {
+  color: #ff0000; /* Red text */
+  background-color: #ffe6e6; /* Light red background */
+  padding: 10px;
+  border: 1px solid #ff0000;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  text-align: center;
+}

@@ -3,6 +3,11 @@
   #loginForm="ngForm"
   class="login-form"
 >
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
   <h3>Log in</h3>
   <div>
     <label for="email">Email:</label>
