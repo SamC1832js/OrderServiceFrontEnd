@@ -26,7 +26,6 @@ The Order Service is an Angular-based e-commerce frontend application that provi
 - View order history
 - View detailed order information
 - Track order status
-- View order totals and dates
 
 ### 4. User Authentication
 - User registration
