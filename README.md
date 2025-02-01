@@ -1,27 +1,118 @@
-# OrderService
+# Order Service Frontend Documentation
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.18.
+## Overview
+The Order Service is an Angular-based e-commerce frontend application that provides product browsing, shopping cart management, and order processing capabilities. The application is built with Angular 12 and implements a modular architecture for better code organization and maintainability.
 
-## Development server
+## Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+### 1. Product Management
+- Browse product catalog
+- View detailed product information 
+- Filter products by:
+  - Brand
+  - Category
+  - Price ranges
+- Product search functionality
 
-## Code scaffolding
+### 2. Shopping Cart
+- Add products to cart
+- Update product quantities
+- Remove products from cart
+- Clear entire cart
+- View cart total
+- Checkout functionality
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### 3. Order Management
+- View order history
+- View detailed order information
+- Track order status
+- View order totals and dates
 
-## Build
+### 4. User Authentication
+- User registration
+- User login/logout
+- Profile management
+- Token-based authentication
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Routes
 
-## Running unit tests
+### Public Routes
+- `/products` - Product catalog listing
+- `/products/:id` - Individual product details
+- `/account/login` - User login page
+- `/account/register` - User registration page
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Protected Routes (Requires Authentication)
+- `/account/profile` - User profile management
+- `/account/orders` - Order history listing
+- `/account/orders/:id` - Individual order details
+- `/cart` - Shopping cart management
 
-## Running end-to-end tests
+## API Integration
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+The frontend integrates with several backend API endpoints:
 
-## Further help
+### Products API
+### Orders API
+### Shopping Cart API
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Authentication
+
+The application uses JWT (JSON Web Token) for authentication([1](https://github.com/SamC1832js/OrderService/blob/master/README.md)). The token is:
+- Stored securely
+- Included in API requests
+- Validated on protected routes
+- Expires after 2 hours
+
+## Technical Details
+
+### Development Server
+- Run `ng serve` for a dev server
+- Navigate to `http://localhost:4200/`
+- Auto-reload enabled for development
+
+### Build
+- Run `ng build` to build the project
+- Production builds are stored in `dist/` directory
+
+### Testing
+- Unit tests via Karma
+- End-to-end tests available
+- Test configuration in karma.conf.js
+
+## CORS Configuration
+The frontend is configured to work with the backend API with the following CORS settings([1](https://github.com/SamC1832js/OrderService/blob/master/README.md)):
+- Allowed Origin: `http://localhost:4200`
+- Allowed Methods: GET, POST, PUT, DELETE, OPTIONS
+- Credentials: Allowed
+- Headers: All allowed
+
+## Error Handling
+The application implements comprehensive error handling for:
+- 400 Bad Request - Invalid input
+- 401 Unauthorized - Authentication issues
+- 403 Forbidden - Permission issues
+- 404 Not Found - Resource not found
+- 500 Internal Server Error - Server errors
+
+## Dependencies
+
+```12:25:package.json
+  "dependencies": {
+    "@angular/animations": "~12.2.0",
+    "@angular/common": "~12.2.0",
+    "@angular/compiler": "~12.2.0",
+    "@angular/core": "~12.2.0",
+    "@angular/forms": "~12.2.0",
+    "@angular/platform-browser": "~12.2.0",
+    "@angular/platform-browser-dynamic": "~12.2.0",
+    "@angular/router": "~12.2.0",
+    "order-service": "file:",
+    "rxjs": "~6.6.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.11.4"
+  },
+```
+
+
+This documentation provides an overview of the Order Service frontend application's capabilities and technical implementation. For more detailed information about specific components or features, please refer to the individual component documentation or source code.
