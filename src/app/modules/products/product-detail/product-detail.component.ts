@@ -18,8 +18,6 @@ import { ShoppingCartService } from 'src/app/service/shoppingCart.service';
 })
 export class ProductDetailComponent implements OnInit {
   @Input() product!: Product;
-  @Output() addToCart = new EventEmitter<Product>();
-  @Output() removeFromCart = new EventEmitter<Product>();
   @HostBinding('class.product-detail-page') isProductDetailPage = false;
 
   constructor(
