@@ -43,8 +43,7 @@ jobs:
       - name: Build Angular app
         run: |
           export NODE_OPTIONS=--openssl-legacy-provider
-          ng build --configuration=production
-
+          ng build
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
