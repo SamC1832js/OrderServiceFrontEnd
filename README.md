@@ -1,5 +1,8 @@
 # Order Service Frontend Documentation
 
+
+http://order-service-client.s3-website.us-east-2.amazonaws.com/products
+deployed on AWS S3
 ## Overview
 The Order Service is an Angular-based e-commerce frontend application that provides product browsing, shopping cart management, and order processing capabilities. The application is built with Angular 12 and implements a modular architecture for better code organization and maintainability.
 
