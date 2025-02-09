@@ -3,8 +3,7 @@ name: Deploy Frontend to S3
 on:
   push:
     branches:
-      - main
-
+      - deploy-to-s3
 env:
   AWS_REGION: us-east-2
   S3_BUCKET: order-service-client
