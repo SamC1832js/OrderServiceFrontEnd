@@ -35,13 +35,15 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Install dependencies
         run: npm install
 
       - name: Build Angular app
-        run: npm run build --prod
+        run: |
+          export NODE_OPTIONS=--openssl-legacy-provider
+          npm run build --prod
 
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
@@ -69,4 +71,4 @@ jobs:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
-          wait-for-service-stability: true 
+          wait-for-service-stability: true
