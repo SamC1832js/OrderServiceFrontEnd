@@ -13,5 +13,8 @@
         <product-detail [product]="product"></product-detail>
       </li>
     </ul>
+    <div *ngIf="filteredProducts.length === 0" class="no-products">
+      No products found
+    </div>
   </div>
 </div>

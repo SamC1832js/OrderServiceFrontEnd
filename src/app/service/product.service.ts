@@ -12,11 +12,10 @@ export class ProductService {
   constructor(private http: HttpClient) {}
 
   getProducts(): Promise<Product[]> {
-    console.log(environment.apiBaseUrl);
-    console.log(`${environment.apiBaseUrl}${this.apiHeader}`);
     return this.http
       .get<Product[]>(`${environment.apiBaseUrl}${this.apiHeader}`)
-      .toPromise();
+      .toPromise()
+      .then((data) => data || []);
   }
 
   getProductById(id: string): Observable<Product> {

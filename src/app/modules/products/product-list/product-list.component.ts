@@ -7,8 +7,8 @@ import { ProductService } from 'src/app/service/product.service';
   styleUrls: ['./product-list.component.css'],
 })
 export class ProductListComponent implements OnInit {
-  products!: Product[];
-  filteredProducts!: Product[];
+  products: Product[] = [];
+  filteredProducts: Product[] = [];
   constructor(private productService: ProductService) {}
 
   ngOnInit() {
@@ -16,6 +16,7 @@ export class ProductListComponent implements OnInit {
       .getProducts()
       .then((products) => {
         this.products = products;
+        this.filteredProducts = products;
       })
       .catch((error) => {
         console.error('Error fetching products:', error);
