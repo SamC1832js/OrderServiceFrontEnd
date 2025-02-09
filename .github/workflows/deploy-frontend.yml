@@ -1,20 +1,17 @@
-name: Deploy Frontend to Amazon ECS
+name: Deploy Frontend to S3
 
 on:
   push:
     branches:
-      - deploy-to-ecs
+      - main
 
 env:
   AWS_REGION: us-east-2
-  ECR_REPOSITORY: ecommerce/orderservice-frontend
-  ECS_SERVICE: OrderServiceClient
-  ECS_CLUSTER: EcommerceCluster
-  CONTAINER_NAME: OrderService-Client
+  S3_BUCKET: order-service-client
 
 jobs:
   deploy:
-    name: Deploy to ECS
+    name: Deploy to S3
     runs-on: ubuntu-latest
 
     steps:
@@ -28,14 +25,18 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18"
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install dependencies
         run: npm install
@@ -44,30 +45,11 @@ jobs:
         run: |
           export NODE_OPTIONS=--openssl-legacy-provider
           npx ng build --configuration=production
-      - name: Build, tag, and push image to Amazon ECR
-        id: build-image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-      - name: Fill in the new image ID in the Amazon ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
+      - name: Deploy to S3 Bucket
+        uses: aws-actions/aws-cli@v1
         with:
-          task-definition: Ecommerce-OrderService-Client-task-definition.json
-          container-name: ${{ env.CONTAINER_NAME }}
-          image: ${{ steps.build-image.outputs.image }}
-
-      - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ${{ env.ECS_SERVICE }}
-          cluster: ${{ env.ECS_CLUSTER }}
-          wait-for-service-stability: true
+          args: |
+            s3 sync dist/OrderServiceClient/ s3://${{ env.S3_BUCKET }} \
+            --delete \
+            --acl public-read
