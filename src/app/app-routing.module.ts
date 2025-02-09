@@ -32,7 +32,7 @@ const routes: Routes = [
   },
 
   // Wildcard route (should always be last)
-  { path: '**', redirectTo: '/account/login' },
+  { path: '**', redirectTo: '/products' },
 ];
 
 @NgModule({
