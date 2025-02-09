@@ -20,7 +20,6 @@ export class ProductListComponent implements OnInit {
       .catch((error) => {
         console.error('Error fetching products:', error);
       });
-    this.filteredProducts = [...this.products];
   }
 
   updateFilteredProducts(filteredProducts: Product[]): void {
