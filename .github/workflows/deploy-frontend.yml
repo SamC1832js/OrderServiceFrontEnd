@@ -49,4 +49,4 @@ jobs:
         run: |
           aws s3 sync dist/OrderServiceClient/ s3://${{ env.S3_BUCKET }} \
           --delete \
-          --acl public-read
+          --no-acl
