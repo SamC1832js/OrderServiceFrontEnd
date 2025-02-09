@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Order } from 'src/app/model/models';
 import { OrderService } from 'src/app/service/order.service';
+import { NotificationService } from 'src/app/service/notification.service';
 
 @Component({
   selector: 'app-order-list',
@@ -9,12 +10,21 @@ import { OrderService } from 'src/app/service/order.service';
 })
 export class OrderListComponent implements OnInit {
   orders!: Order[];
-  constructor(private orderService: OrderService) {}
+
+  constructor(
+    private orderService: OrderService,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit() {
     this.orderService.getOrders().subscribe({
-      next: (orders) => (this.orders = orders),
-      error: (error) => console.error('Failed to load orders:', error),
+      next: (orders) => {
+        this.orders = orders;
+      },
+      error: (error) => {
+        console.error('Failed to load orders:', error);
+        this.notificationService.show('Failed to load orders', 'error');
+      },
     });
   }
 }

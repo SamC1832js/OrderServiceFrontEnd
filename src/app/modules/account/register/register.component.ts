@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccountService } from 'src/app/service/account.service';
+import { NotificationService } from 'src/app/service/notification.service';
 
 @Component({
   selector: 'app-register',
@@ -11,7 +12,11 @@ import { AccountService } from 'src/app/service/account.service';
 export class RegisterComponent implements OnInit {
   errorMessage!: string;
   successMessage: any;
-  constructor(private accountService: AccountService, private router: Router) {}
+  constructor(
+    private accountService: AccountService,
+    private router: Router,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit() {}
 
@@ -29,33 +34,47 @@ export class RegisterComponent implements OnInit {
         .subscribe({
           next: (response) => {
             console.log('Registration successful:', response);
-            // Handle successful registration (e.g., show a success message)
-            this.successMessage = response; // Display the plain text response
+            this.notificationService.show(
+              'Registration successful!',
+              'success'
+            );
 
-            // Optionally, automatically log the user in after successful registration
+            // Auto-login after registration
             this.accountService
               .login(form.value.email, form.value.password)
               .subscribe({
                 next: (loginResponse) => {
                   console.log('Login successful:', loginResponse);
-                  // Redirect or update UI as needed
-                  this.router.navigate(['/dashboard']); // Redirect to dashboard
+                  this.notificationService.show(
+                    'Logged in successfully!',
+                    'success'
+                  );
+                  this.router.navigate(['/account/profile']);
                 },
                 error: (loginError) => {
                   console.error('Login failed:', loginError);
-                  this.errorMessage =
-                    'Registration successful, but login failed. Please log in manually.';
+                  this.notificationService.show(
+                    'Registration successful, but automatic login failed. Please log in manually.',
+                    'error'
+                  );
+                  this.router.navigate(['/account/login']);
                 },
               });
           },
           error: (error) => {
             console.error('Registration failed:', error);
-            this.errorMessage = 'Registration failed. Please try again.';
+            this.notificationService.show(
+              error.error?.message || 'Registration failed. Please try again.',
+              'error'
+            );
           },
         });
     } else {
       console.error('Form is invalid');
-      this.errorMessage = 'Please fill out all fields correctly.';
+      this.notificationService.show(
+        'Please fill out all fields correctly.',
+        'error'
+      );
     }
   }
 }

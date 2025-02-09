@@ -1,11 +1,14 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError, EMPTY } from 'rxjs';
 import { ShoppingCart, CartItem, Product, OrderItem } from '../model/models';
 import { environment } from 'src/environments/environment';
 import { AuthTokenService } from './authToken.service';
 import { catchError, filter, map, tap } from 'rxjs/operators';
 import { AccountService } from './account.service';
+import { Router } from '@angular/router';
+import { NotificationService } from './notification.service';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -17,7 +20,9 @@ export class ShoppingCartService {
   constructor(
     private http: HttpClient,
     private authTokenService: AuthTokenService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private router: Router,
+    private notificationService: NotificationService
   ) {
     this.accountService.isAuthenticated$
       .pipe(filter((isAuthenticated) => !isAuthenticated))
@@ -40,11 +45,21 @@ export class ShoppingCartService {
         })
       );
   }
+
   // Add a product to the shopping cart
   addToCart(
     productName: string,
     quantity: number = 1
   ): Observable<ShoppingCart> {
+    if (!this.accountService.isAuthenticated()) {
+      this.router.navigate(['/account/login']);
+      this.notificationService.show(
+        'Cannot use cart as guest, please login/register first',
+        'error'
+      );
+      return EMPTY;
+    }
+
     const headers = this.authTokenService.getAuthHeaders();
     const body: CartItem = { productName, quantity };
 
@@ -54,7 +69,17 @@ export class ShoppingCartService {
       })
       .pipe(
         map((rawCart) => this.transformCartData(rawCart)),
-        tap((cart) => this.updateItemCount(cart))
+        tap((cart) => this.updateItemCount(cart)),
+        catchError((error) => {
+          if (error.status === 401) {
+            this.router.navigate(['/account/login']);
+            this.notificationService.show(
+              'Please login to add items to cart',
+              'error'
+            );
+          }
+          return throwError(() => error);
+        })
       );
   }
 

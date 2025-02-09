@@ -2,9 +2,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AuthTokenService } from './authToken.service';
-import { catchError, tap } from 'rxjs/operators';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { catchError, tap, map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { User } from '../model/models';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,8 @@ export class AccountService {
 
   constructor(
     private http: HttpClient,
-    private authTokenService: AuthTokenService
+    private authTokenService: AuthTokenService,
+    private router: Router
   ) {
     this.initializeAuthStatus();
   }
@@ -132,5 +134,31 @@ export class AccountService {
       console.error('Token validation error:', error);
       return false;
     }
+  }
+
+  validateToken(): Observable<boolean> {
+    const token = this.authTokenService.getToken();
+    if (!token) {
+      this.authStatus.next(false);
+      return of(false);
+    }
+
+    const headers = this.authTokenService.getAuthHeaders();
+    return this.http
+      .get<any>(`${environment.apiBaseUrl}users/validateToken`, { headers })
+      .pipe(
+        map(() => {
+          this.authStatus.next(true);
+          return true;
+        }),
+        catchError((error) => {
+          console.error('Token validation error:', error);
+          this.authStatus.next(false);
+          if (error.status === 401) {
+            this.router.navigate(['/account/login']);
+          }
+          return of(false);
+        })
+      );
   }
 }

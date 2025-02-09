@@ -4,7 +4,7 @@
     <a [routerLink]="['/account/orders', order.id]" class="order-card">
       <h3>Order #{{ order.id }}</h3>
       <p>Date Ordered: {{ order.date | date : "shortDate" }}</p>
-      <p>Total Paid: ${{ order.totalPrice }}</p>
+      <p>Total Paid: ${{ order.totalPrice | number : "1.2-2" }}</p>
     </a>
   </div>
 </div>

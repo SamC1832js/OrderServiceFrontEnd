@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +17,7 @@ import { AuthTokenService } from './service/authToken.service';
 import { OrderService } from './service/order.service';
 import { AccountService } from './service/account.service';
 import { ProfileComponent } from './modules/account/profile/profile.component';
+import { NotificationComponent } from './shared/components/notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -23,9 +25,11 @@ import { ProfileComponent } from './modules/account/profile/profile.component';
     NavComponent,
     ShoppingCartComponent,
     ProfileComponent,
+    NotificationComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
     AppRoutingModule,

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ShoppingCart } from 'src/app/model/models';
 import { OrderService } from 'src/app/service/order.service';
 import { ShoppingCartService } from 'src/app/service/shoppingCart.service';
+import { NotificationService } from 'src/app/service/notification.service';
 
 @Component({
   selector: 'shopping-cart',
@@ -15,7 +16,8 @@ export class ShoppingCartComponent implements OnInit, AfterViewInit {
   constructor(
     private shoppingCartService: ShoppingCartService,
     private orderService: OrderService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -39,11 +41,12 @@ export class ShoppingCartComponent implements OnInit, AfterViewInit {
   updateQuantity(productName: string, quantity: number) {
     this.shoppingCartService.updateCart(productName, quantity).subscribe({
       next: (updatedCart) => {
-        console.log('Quantity updated:', updatedCart);
-        this.cart = updatedCart; // Update local cart state directly
+        this.cart = updatedCart;
+        this.notificationService.show('Cart updated successfully', 'success');
       },
       error: (error) => {
         console.error('Failed to update quantity:', error);
+        this.notificationService.show('Failed to update cart', 'error');
       },
     });
   }
@@ -51,11 +54,12 @@ export class ShoppingCartComponent implements OnInit, AfterViewInit {
   removeProduct(productName: string) {
     this.shoppingCartService.removeFromCart(productName).subscribe({
       next: (updatedCart) => {
-        console.log('Product removed:', updatedCart);
-        this.cart = updatedCart; // Update local cart state directly
+        this.cart = updatedCart;
+        this.notificationService.show('Product removed from cart', 'success');
       },
       error: (error) => {
         console.error('Failed to remove product:', error);
+        this.notificationService.show('Failed to remove product', 'error');
       },
     });
   }
@@ -72,10 +76,17 @@ export class ShoppingCartComponent implements OnInit, AfterViewInit {
     if (confirmClear) {
       this.shoppingCartService.clearCart().subscribe({
         next: (updatedCart) => {
-          this.cart = updatedCart; // Refresh the cart
+          this.cart = updatedCart;
+          if (!isCheckout) {
+            this.notificationService.show(
+              'Cart cleared successfully',
+              'success'
+            );
+          }
         },
         error: (error) => {
           console.error('Failed to clear cart:', error);
+          this.notificationService.show('Failed to clear cart', 'error');
         },
       });
     }
@@ -85,12 +96,13 @@ export class ShoppingCartComponent implements OnInit, AfterViewInit {
     this.orderService.createOrder().subscribe({
       next: (order) => {
         console.log('Order created:', order);
-        this.clearCart(true); // Clear cart after successful order creation
-        this.router.navigate(['/account/orders', order.id]); // Navigate to order detail
+        this.clearCart(true);
+        this.notificationService.show('Order placed successfully!', 'success');
+        this.router.navigate(['/account/orders', order.id]);
       },
       error: (error) => {
         console.error('Checkout failed:', error);
-        // Handle error (show message to user)
+        this.notificationService.show('Failed to place order', 'error');
       },
     });
   }

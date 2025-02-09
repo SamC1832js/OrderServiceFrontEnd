@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AccountService } from 'src/app/service/account.service';
 import { Router } from '@angular/router';
+import { NotificationService } from 'src/app/service/notification.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -10,7 +11,11 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   errorMessage: string = '';
 
-  constructor(private accountService: AccountService, private router: Router) {}
+  constructor(
+    private accountService: AccountService,
+    private router: Router,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit() {}
 
@@ -19,13 +24,15 @@ export class LoginComponent implements OnInit {
     const password = form.value.password;
     this.accountService.login(email, password).subscribe({
       next: (response) => {
+        this.notificationService.show('Login successful!', 'success');
         this.router.navigate(['/account/profile']);
-        console.log('Login successful', response);
       },
       error: (error) => {
         console.error('Login failed', error);
-        this.errorMessage =
-          'Login failed. Please check your email and password.';
+        this.notificationService.show(
+          'Login failed. Please check your email and password.',
+          'error'
+        );
       },
     });
   }

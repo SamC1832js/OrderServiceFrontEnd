@@ -10,6 +10,7 @@ import { Product } from '../../../model/models';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ProductService } from 'src/app/service/product.service';
 import { ShoppingCartService } from 'src/app/service/shoppingCart.service';
+import { NotificationService } from 'src/app/service/notification.service';
 
 @Component({
   selector: 'product-detail',
@@ -24,7 +25,8 @@ export class ProductDetailComponent implements OnInit {
     private productService: ProductService,
     private shoppingCartService: ShoppingCartService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +56,10 @@ export class ProductDetailComponent implements OnInit {
       this.shoppingCartService.addToCart(this.product.name, 1).subscribe({
         next: (response) => {
           console.log('Product added to cart:', response);
+          this.notificationService.show(
+            'Product added to cart successfully!',
+            'success'
+          );
         },
         error: (error) => {
           console.error('Failed to add product to cart:', error);
