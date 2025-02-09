@@ -46,9 +46,7 @@ jobs:
           npx ng build --configuration=production
 
       - name: Deploy to S3 Bucket
-        uses: aws-actions/aws-cli@v1
-        with:
-          args: |
-            s3 sync dist/OrderServiceClient/ s3://${{ env.S3_BUCKET }} \
-            --delete \
-            --acl public-read
+        run: |
+          aws s3 sync dist/OrderServiceClient/ s3://${{ env.S3_BUCKET }} \
+          --delete \
+          --acl public-read
