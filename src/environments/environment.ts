@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: `${process.env['API_URL']}/api/`,
+  apiBaseUrl: 'API_URL_PLACEHOLDER/api/',
 };
 
 /*
