@@ -48,5 +48,4 @@ jobs:
       - name: Deploy to S3 Bucket
         run: |
           aws s3 sync dist/OrderServiceClient/ s3://${{ env.S3_BUCKET }} \
-          --delete \
-          --no-acl
+          --delete
