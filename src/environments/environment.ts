@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'http://52.14.241.58:8080/api/',
+  apiBaseUrl: `${process.env['API_URL']}/api/`,
 };
 
 /*
