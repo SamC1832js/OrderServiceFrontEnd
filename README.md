@@ -120,7 +120,6 @@ The application implements comprehensive error handling for:
 This documentation provides an overview of the Order Service frontend application's capabilities and technical implementation. For more detailed information about specific components or features, please refer to the individual component documentation or source code.
 
 
-```markdown
 **Console Logs Summary**
 
 ### 1. Initial Load & Application Creation
